@@ -1,0 +1,64 @@
+import { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+
+export default function HemelwaterApp() {
+  const [surface, setSurface] = useState(50);
+  const [intensity, setIntensity] = useState(0.03);
+  const [flowRate, setFlowRate] = useState(null);
+  const [diameter, setDiameter] = useState(null);
+
+  const calculate = () => {
+    const q = surface * intensity;
+    setFlowRate(q.toFixed(2));
+
+    let d = "Onbekend";
+    if (q <= 1.4) d = "70 mm";
+    else if (q <= 2.0) d = "80 mm";
+    else if (q <= 3.5) d = "100 mm";
+    else d = ">100 mm of extra afvoerpunt nodig";
+
+    setDiameter(d);
+  };
+
+  return (
+    <div className="p-6 max-w-xl mx-auto space-y-4">
+      <h1 className="text-2xl font-bold">Hemelwaterdebiet Calculator</h1>
+      <Card>
+        <CardContent className="space-y-4 pt-6">
+          <div>
+            <Label>Oppervlakte dakvlak (m²)</Label>
+            <Input
+              type="number"
+              value={surface}
+              onChange={(e) => setSurface(Number(e.target.value))}
+            />
+          </div>
+
+          <div>
+            <Label>Regenintensiteit (l/s per m²)</Label>
+            <select
+              className="w-full border p-2 rounded"
+              value={intensity}
+              onChange={(e) => setIntensity(Number(e.target.value))}
+            >
+              <option value={0.03}>Normaal (0.03 l/s·m²)</option>
+              <option value={0.05}>Extreem (0.05 l/s·m²)</option>
+            </select>
+          </div>
+
+          <Button onClick={calculate}>Bereken debiet</Button>
+
+          {flowRate && (
+            <div className="pt-4 space-y-2">
+              <p><strong>Benodigd debiet:</strong> {flowRate} l/s</p>
+              <p><strong>Advies buisdiameter:</strong> {diameter}</p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
