@@ -1,0 +1,6 @@
+git clone https://github.com/marcovanerkel-6762/hemelwater-app.git
+cd hemelwater-app
+# Voeg je React-code toe, bijvoorbeeld via een teksteditor
+git add .
+git commit -m "Initial commit: hemelwaterdebiet calculator"
+git push origin main
